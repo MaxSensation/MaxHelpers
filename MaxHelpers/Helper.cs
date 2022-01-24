@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace MaxHelpers
 {
@@ -8,6 +9,7 @@ namespace MaxHelpers
     {
         // Cache the main Camera for everywhere use
         private static Camera _camera;
+        
         public static Camera Camera
         {
             get
@@ -18,7 +20,8 @@ namespace MaxHelpers
         }
         
         // Cache each WaitForSeconds to minimize the allocation
-        private static readonly Dictionary<float, WaitForSeconds> WaitDictionary = new Dictionary<float, WaitForSeconds>();
+        private static readonly Dictionary<float, WaitForSeconds> WaitDictionary = new();
+        
         public static WaitForSeconds GetWait(float time)
         {
             if (WaitDictionary.TryGetValue(time, out var wait)) return wait;
@@ -29,10 +32,26 @@ namespace MaxHelpers
         // Check if the mouse is hovering on UI element
         private static PointerEventData _eventDataCurrentPosition;
         private static List<RaycastResult> _results;
-
+        
         public static bool IsOverUi()
         {
-            _eventDataCurrentPosition = new PointerEventData(EventSystem.current) {Mouse}
+            _eventDataCurrentPosition = new PointerEventData(EventSystem.current) {position = Mouse.current.position.ReadValue()};
+            _results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(_eventDataCurrentPosition, _results);
+            return _results.Count > 0;
+        }
+        
+        // Get the world position on any given Canvas Element
+        public static Vector2 GetWorldPositionOfCanvasElement(RectTransform element)
+        {
+            RectTransformUtility.ScreenPointToWorldPointInRectangle(element, element.position, Camera, out var result);
+            return result;
+        }
+        
+        // Destroy all child objects of parent
+        public static void DeleteChildren(this Transform t)
+        {
+            foreach (Transform child in t) Object.Destroy(child.gameObject);
         }
     }
 }
