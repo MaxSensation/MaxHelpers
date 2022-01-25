@@ -4,19 +4,26 @@
         <ui:VisualElement style="height: 552px; width: 1040px; background-color: rgb(255, 255, 255); border-top-left-radius: 25px; border-bottom-left-radius: 25px; border-top-right-radius: 25px; border-bottom-right-radius: 25px; align-items: center; justify-content: center;">
             <ui:Label text="Options" display-tooltip-when-elided="true" style="color: rgb(0, 0, 0); font-size: 32px; -unity-text-align: lower-left; position: relative; top: auto;" />
             <ui:VisualElement style="width: 95%; height: 100%; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; flex-direction: row; justify-content: center; align-items: stretch;">
-                <ui:VisualElement name="GraphicsPanel" style="width: 48%; height: 100%;">
-                    <ui:Label text="Graphics" display-tooltip-when-elided="true" class="DefaultSubHeader" />
-                    <ui:DropdownField label="GraphicSettings" index="1" choices="Low, Medium, High" name="GraphicSetting" style="margin-left: 4px; margin-right: 10px; opacity: 1;" />
+                <ui:VisualElement>
+                    <ui:VisualElement name="GraphicsPanel" style="width: auto; height: 50%;">
+                        <ui:Label text="Graphics" display-tooltip-when-elided="true" class="DefaultSubHeader" />
+                        <ui:DropdownField label="GraphicSettings" index="1" choices="Low, Medium, High" name="GraphicSetting" style="margin-left: 4px; margin-right: 180px; opacity: 1;" />
+                        <ui:Toggle label="Fullscreen" name="FullscreenToggle" value="true" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="ControlsPanel" style="height: 50%;">
+                        <ui:Label text="Controls" display-tooltip-when-elided="true" class="DefaultSubHeader" />
+                        <ui:Slider picking-mode="Ignore" label="Sensetivity" value="0.5" high-value="1" low-value="0.1" class="DefaultSlider" style="margin-right: 50px;" />
+                    </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement style="width: 5px; height: 100%; background-color: rgb(0, 0, 0);" />
                 <ui:VisualElement name="AudioPanel" style="width: 48%; height: 100%;">
                     <ui:Label text="Audio" display-tooltip-when-elided="true" class="DefaultSubHeader" />
-                    <ui:Slider picking-mode="Ignore" label="MasterVolume" value="50" high-value="100" name="MasterSlider" inverted="false" class="DefaultSlider" />
-                    <ui:Slider picking-mode="Ignore" label="MusicVolume" value="50" high-value="100" name="MusicSlider" class="DefaultSlider" />
-                    <ui:Slider picking-mode="Ignore" label="SoundFXVolume" value="50" high-value="100" name="SoundFXSlider" class="DefaultSlider" />
+                    <ui:Slider picking-mode="Ignore" label="MasterVolume" value="0.5" high-value="1" name="MasterSlider" inverted="false" low-value="0.001" class="DefaultSlider" />
+                    <ui:Slider picking-mode="Ignore" label="MusicVolume" value="0.5" high-value="1" name="MusicSlider" low-value="0.001" class="DefaultSlider" />
+                    <ui:Slider picking-mode="Ignore" label="SoundFXVolume" value="0.5" high-value="1" name="SoundFXSlider" low-value="0.001" class="DefaultSlider" />
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:Button text="Go Back" display-tooltip-when-elided="true" name="GoBack" class="DefaultButton" style="height: 46px; width: 193px;" />
+            <ui:Button text="Go Back" display-tooltip-when-elided="true" name="GoBack" value="0.5" class="DefaultButton" style="height: 46px; width: 193px;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace MaxHelpers
 {
@@ -6,7 +7,7 @@ namespace MaxHelpers
     {
         [SerializeField] private AudioSource musicSource;
         [SerializeField] private AudioSource soundsSource;
-
+        [SerializeField] private AudioMixer audioMixer;
         public void PlayMusic(AudioClip clip)
         {
             musicSource.clip = clip;
@@ -18,10 +19,9 @@ namespace MaxHelpers
             soundsSource.transform.position = pos;
             PlaySound(clip, vol);
         }
+        
+        public void PlaySound(AudioClip clip, float vol = 1) => soundsSource.PlayOneShot(clip, vol);
 
-        public void PlaySound(AudioClip clip, float vol = 1)
-        {
-            soundsSource.PlayOneShot(clip, vol);
-        }
+        public void SetVolume(string mixerName, float volume) => audioMixer.SetFloat(mixerName, Mathf.Log10(volume) * 20);
     }
 }
