@@ -1,7 +1,7 @@
 .DefaultButton {
     height: 70px;
     width: 251px;
-    background-color: rgb(0, 12, 171);
+    background-color: rgb(120, 120, 120);
     border-left-width: 0;
     border-right-width: 0;
     border-top-width: 0;
@@ -21,7 +21,7 @@
 .DefaultButton:hover {
     height: 70px;
     width: 251px;
-    background-color: rgb(0, 18, 255);
+    background-color: rgb(159, 159, 159);
     border-left-width: 0;
     border-right-width: 0;
     border-top-width: 0;
@@ -41,7 +41,7 @@
 .DefaultButton:active {
     height: 70px;
     width: 251px;
-    background-color: rgb(0, 18, 255);
+    background-color: rgb(0, 0, 0);
     border-left-width: 0;
     border-right-width: 0;
     border-top-width: 0;
@@ -56,5 +56,14 @@
     margin-right: 4px;
     margin-top: 4px;
     margin-bottom: 4px;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+}
+
+.DefaultSubHeader {
+    font-size: 20px;
+    -unity-font-style: bold;
+}
+
+.DefaultSlider {
+    padding-top: 50px;
 }
