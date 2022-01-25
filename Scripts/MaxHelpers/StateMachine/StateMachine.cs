@@ -71,5 +71,7 @@ namespace MaxHelpers
             if (_prevState == null) return;
             SetState(_prevState);
         }
+        
+        public IState GetPreviousState() => _prevState;
     }
 }
