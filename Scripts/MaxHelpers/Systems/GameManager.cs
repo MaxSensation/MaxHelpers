@@ -15,10 +15,5 @@ namespace MaxHelpers
         }
 
         public void Continue() => LevelManager.Instance.LoadScene(currentLevel);
-
-        public void UpdateSensitivity(float newSensitivity)
-        {
-            //TODO update sensitivity
-        }
     }
 }

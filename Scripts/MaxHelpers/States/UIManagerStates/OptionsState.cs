@@ -1,75 +1,64 @@
-﻿using UnityEngine;
-using UnityEngine.UIElements;
+﻿using UnityEngine.UIElements;
 
 namespace MaxHelpers
 {
     public class OptionsState : IState
     {
         private readonly VisualTreeAsset _optionsUI;
-
-        public OptionsState(VisualTreeAsset optionsUI) => _optionsUI = optionsUI;
+        private SettingsData _data;
         private Slider _masterSlider, _musicSlider, _soundFxSlider, _sensitivitySlider;
-        private DropdownField _dropdown;
+        private DropdownField _qualityDropdown;
         private Toggle _fullscreenToggle;
+        
+        public OptionsState(VisualTreeAsset optionsUI) => _optionsUI = optionsUI;
+
+        private void LoadData()
+        {
+            _masterSlider.SetValueWithoutNotify(SettingsManager.Instance.VolumeMaster);
+            _musicSlider.SetValueWithoutNotify(SettingsManager.Instance.VolumeMusic);
+            _soundFxSlider.SetValueWithoutNotify(SettingsManager.Instance.VolumeSoundFX);
+            _fullscreenToggle.SetValueWithoutNotify(SettingsManager.Instance.Fullscreen);
+            _qualityDropdown.SetValueWithoutNotify(SettingsManager.Instance.QualitySettings);
+            _sensitivitySlider.SetValueWithoutNotify(SettingsManager.Instance.Sensitivity);
+        }
 
         public void OnEnter()
         {
             UIManager.Instance.UIElement.visualTreeAsset = _optionsUI;
-            UIManager.Instance.UIElement.rootVisualElement.Q<Button>("GoBack").clicked += UIManager.Instance.GoToPreviousState;
-            // Sound
+            // Get all UI elements
             _masterSlider = UIManager.Instance.UIElement.rootVisualElement.Q<Slider>("MasterSlider");
             _musicSlider = UIManager.Instance.UIElement.rootVisualElement.Q<Slider>("MusicSlider");
             _soundFxSlider = UIManager.Instance.UIElement.rootVisualElement.Q<Slider>("SoundFXSlider");
-            _masterSlider.RegisterValueChangedCallback(UpdateMasterVolume);
-            _musicSlider.RegisterValueChangedCallback(UpdateMusicVolume);
-            _soundFxSlider.RegisterValueChangedCallback(UpdateSoundFxVolume);
-            // Graphics Settings
-            _dropdown = UIManager.Instance.UIElement.rootVisualElement.Q<DropdownField>("GraphicSetting");
-            _dropdown.RegisterValueChangedCallback(UpdateGraphicSetting);
+            _qualityDropdown = UIManager.Instance.UIElement.rootVisualElement.Q<DropdownField>("GraphicSetting");
             _fullscreenToggle = UIManager.Instance.UIElement.rootVisualElement.Q<Toggle>("FullscreenToggle");
-            _fullscreenToggle.RegisterValueChangedCallback(UpdateFullscreen);
-            // Controls
-            _sensitivitySlider = _soundFxSlider = UIManager.Instance.UIElement.rootVisualElement.Q<Slider>("SensitivitySlider");
-            _sensitivitySlider.RegisterValueChangedCallback(UpdateSensitivity);
+            _sensitivitySlider = UIManager.Instance.UIElement.rootVisualElement.Q<Slider>("SensitivitySlider");
+            // Load Data to UI
+            LoadData();
+            // Register for UI events
+            UIManager.Instance.UIElement.rootVisualElement.Q<Button>("GoBack").clicked += UIManager.Instance.GoToPreviousState;
+            _masterSlider.RegisterValueChangedCallback(SettingsManager.Instance.UpdateMasterVolume);
+            _musicSlider.RegisterValueChangedCallback(SettingsManager.Instance.UpdateMusicVolume);
+            _soundFxSlider.RegisterValueChangedCallback(SettingsManager.Instance.UpdateSoundFxVolume);
+            _qualityDropdown.RegisterValueChangedCallback(SettingsManager.Instance.UpdateGraphicSetting);
+            _fullscreenToggle.RegisterValueChangedCallback(SettingsManager.Instance.UpdateFullscreen);
+            _sensitivitySlider.RegisterValueChangedCallback(SettingsManager.Instance.UpdateSensitivity);
+            // Enable UI Controls
             GameManager.Instance.Inputs.UI.Enable();
-            // TODO Load settings and apply to elements
         }
-
-        private void UpdateFullscreen(ChangeEvent<bool> toggleEvent) => Screen.fullScreenMode = toggleEvent.newValue ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
-
-        private void UpdateGraphicSetting(ChangeEvent<string> dropdownEvent)
-        {
-            switch (dropdownEvent.newValue)
-            {
-                case "Low":
-                    QualitySettings.SetQualityLevel (0, true);
-                    break;
-                case "Normal":
-                    QualitySettings.SetQualityLevel (3, true);
-                    break;
-                case "High":
-                    QualitySettings.SetQualityLevel (5, true);
-                    break;
-            }
-        }
-
-        // TODO Refactor this!!!
-        private void UpdateSensitivity(ChangeEvent<float> sliderEvent) => GameManager.Instance.UpdateSensitivity(sliderEvent.newValue);
-        private void UpdateMasterVolume(ChangeEvent<float> sliderEvent) => AudioSystem.Instance.SetVolume("Master", sliderEvent.newValue);
-        private void UpdateMusicVolume(ChangeEvent<float> sliderEvent) => AudioSystem.Instance.SetVolume("Music", sliderEvent.newValue);
-        private void UpdateSoundFxVolume(ChangeEvent<float> sliderEvent) => AudioSystem.Instance.SetVolume("SoundFX", sliderEvent.newValue);
 
         public void OnExit()
         {
-            // TODO Apply and save settings to disk
+            // Unregister for UI events
             UIManager.Instance.UIElement.rootVisualElement.Q<Button>("GoBack").clicked -= UIManager.Instance.GoToPreviousState;
-            _masterSlider.UnregisterValueChangedCallback(UpdateMasterVolume);
-            _musicSlider.UnregisterValueChangedCallback(UpdateMusicVolume);
-            _soundFxSlider.UnregisterValueChangedCallback(UpdateSoundFxVolume);
-            _sensitivitySlider.UnregisterValueChangedCallback(UpdateSensitivity);
-            _dropdown.UnregisterValueChangedCallback(UpdateGraphicSetting);
-            _fullscreenToggle.UnregisterValueChangedCallback(UpdateFullscreen);
+            _masterSlider.UnregisterValueChangedCallback(SettingsManager.Instance.UpdateMasterVolume);
+            _musicSlider.UnregisterValueChangedCallback(SettingsManager.Instance.UpdateMusicVolume);
+            _soundFxSlider.UnregisterValueChangedCallback(SettingsManager.Instance.UpdateSoundFxVolume);
+            _sensitivitySlider.UnregisterValueChangedCallback(SettingsManager.Instance.UpdateSensitivity);
+            _qualityDropdown.UnregisterValueChangedCallback(SettingsManager.Instance.UpdateGraphicSetting);
+            _fullscreenToggle.UnregisterValueChangedCallback(SettingsManager.Instance.UpdateFullscreen);
+            // Disable UI Controls
             GameManager.Instance.Inputs.UI.Disable();
+            SettingsManager.Instance.SaveData();
         }
     }
 }
