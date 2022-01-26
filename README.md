@@ -4,7 +4,3 @@ A scripting package made from years of game development where each script is use
 -- Use as you will --
 
 !!! Be aware that some scripts are using C# 8 and need to be converted if used in older Unity versions !!!
-
-TODO 
-- Add a generic Savesystem
-- Add a generic sensitivitySystem
