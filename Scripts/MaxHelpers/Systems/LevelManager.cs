@@ -4,11 +4,12 @@ using UnityEngine.SceneManagement;
 
 namespace MaxHelpers
 {
-    public class LevelManager : StaticInstance<LevelManager>
+    public class LevelManager : DataHandler<LevelManager, LevelData>
     {
         public Action OnStartLoadEvent, OnCompletedLoadEvent;
         public float LoadingProgress { get; private set; }
-
+        
+        private void Start() => InitData("level");
         public async void LoadScene(string sceneName)
         {
             OnStartLoadEvent?.Invoke();
@@ -22,5 +23,7 @@ namespace MaxHelpers
             scene.allowSceneActivation = true;
             OnCompletedLoadEvent?.Invoke();
         }
+        public void SetCurrentLevel(string level) => Data.currentLevel = level;
+        public void LoadLastLevel() => LoadScene(Data.currentLevel);
     }
 }

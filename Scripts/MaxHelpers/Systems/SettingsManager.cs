@@ -1,32 +1,26 @@
-﻿using UnityEngine;
+﻿using System;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace MaxHelpers
 {
-    public class SettingsManager : StaticInstance<SettingsManager>
+    public class SettingsManager : DataHandler<SettingsManager, SettingsData>
     {
-        public float VolumeMaster => _data.masterVolume;
-        public float VolumeMusic => _data.musicVolume;
-        public float VolumeSoundFX => _data.soundFXVolume;
-        public bool Fullscreen => _data.fullScreen;
-        public string QualitySettings => _data.qualitySettings;
-        public float Sensitivity => _data.sensitivity;
-
-        private SettingsData _data;
+        public float VolumeMaster => Data.masterVolume;
+        public float VolumeMusic => Data.musicVolume;
+        public float VolumeSoundFX => Data.soundFXVolume;
+        public bool Fullscreen => Data.fullScreen;
+        public string QualitySettings => Data.qualitySettings;
+        public float Sensitivity => Data.sensitivity;
+        
         private void Start()
         {
-            GetData();
-            LoadData();
+            InitData("settings");
+            InitSettings();
         }
-
-        private void GetData()
-        {
-            DataManager.Instance.Load<SettingsData>("Settings");
-            var iSave = DataManager.Instance.GetData("Settings");
-            _data = iSave != null ? (SettingsData) iSave : CreateNewDefaultData();
-        }
-
-        private void LoadData()
+        
+        private void InitSettings()
         {
             AudioManager.Instance.SetVolume("Master", VolumeMaster);
             AudioManager.Instance.SetVolume("Music", VolumeMusic);
@@ -35,22 +29,6 @@ namespace MaxHelpers
             SetFullscreen(Fullscreen);
         }
 
-        public void SaveData() => DataManager.Instance.SaveData("Settings", _data);
-
-        private SettingsData CreateNewDefaultData()
-        {
-            // TODO Make a default scriptable object instead! 
-            return new SettingsData
-            {
-                masterVolume = 0.1f,
-                musicVolume = 0.1f,
-                soundFXVolume = 0.1f,
-                fullScreen = true,
-                qualitySettings = "High",
-                sensitivity = 0.5f
-            };
-        }
-        
         private static void SetQuality(string quality)
         {
             switch (quality)
@@ -66,41 +44,54 @@ namespace MaxHelpers
                     break;
             }
         }
-        
+
+        private static void SetResolution(string resolution, bool fullScreen)
+        {
+            var combinedString = resolution.Split("x");
+            int.TryParse(combinedString[0], out var width);
+            int.TryParse(combinedString[1], out var height);
+            Screen.SetResolution(width, height, fullScreen);
+        }
         private static void SetFullscreen(bool fullscreen) => Screen.fullScreenMode = fullscreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
 
         public void UpdateFullscreen(ChangeEvent<bool> toggleEvent)
         {
-            _data.fullScreen = toggleEvent.newValue;
+            Data.fullScreen = toggleEvent.newValue;
             SetFullscreen(toggleEvent.newValue);
         }
 
         public void UpdateGraphicSetting(ChangeEvent<string> dropdownEvent)
         {
-            _data.qualitySettings = dropdownEvent.newValue;
+            Data.qualitySettings = dropdownEvent.newValue;
             SetQuality(dropdownEvent.newValue);
+        }
+
+        public void UpdateResolution(ChangeEvent<string> dropdownEvent)
+        {
+            Data.resolution = dropdownEvent.newValue;
+            SetResolution(Data.resolution, Data.fullScreen);
         }
         
         public void UpdateSensitivity(ChangeEvent<float> sliderEvent)
         {
-            _data.sensitivity = sliderEvent.newValue;
+            Data.sensitivity = sliderEvent.newValue;
         }
         
         public void UpdateMasterVolume(ChangeEvent<float> sliderEvent)
         {
-            _data.masterVolume = sliderEvent.newValue;
+            Data.masterVolume = sliderEvent.newValue;
             AudioManager.Instance.SetVolume("Master", sliderEvent.newValue);
         }
         
         public void UpdateMusicVolume(ChangeEvent<float> sliderEvent)
         {
-            _data.musicVolume = sliderEvent.newValue;
+            Data.musicVolume = sliderEvent.newValue;
             AudioManager.Instance.SetVolume("Music", sliderEvent.newValue);
         }
 
         public void UpdateSoundFxVolume(ChangeEvent<float> sliderEvent)
         {
-            _data.soundFXVolume = sliderEvent.newValue;
+            Data.soundFXVolume = sliderEvent.newValue;
             AudioManager.Instance.SetVolume("SoundFX", sliderEvent.newValue);
         }
     }

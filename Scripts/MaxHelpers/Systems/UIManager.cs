@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace MaxHelpers {
-    public class UIManager : Singleton<UIManager>
+    public class UIManager : StaticInstance<UIManager>
     {
         [SerializeField] private VisualTreeAsset mainMenuUI;
         [SerializeField] private VisualTreeAsset inGameMenuUI;

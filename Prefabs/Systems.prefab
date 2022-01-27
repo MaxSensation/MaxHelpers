@@ -586,6 +586,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 101a344245af429088302a637352429a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultData:
+    currentLevel: Level 1
 --- !u!1 &607577006506387633
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,7 +632,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d92baf36dc4f4b0e9416951b1e9cdb5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentLevel: Level 1
 --- !u!1 &5052815528068348416
 GameObject:
   m_ObjectHideFlags: 0
@@ -675,3 +676,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb4eb6d670bc4014b1b49e6541544f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultData:
+    masterVolume: 0.5
+    musicVolume: 0.5
+    soundFXVolume: 0.5
+    fullScreen: 1
+    qualitySettings: High
+    sensitivity: 0.5

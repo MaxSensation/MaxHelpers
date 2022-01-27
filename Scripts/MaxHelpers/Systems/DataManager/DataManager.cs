@@ -12,8 +12,7 @@ namespace MaxHelpers
         private FileStream _dataStream;
         private readonly byte[] _savedKey = { 0x12, 0x15, 0x16, 0x15, 0x12, 0x15, 0x13, 0x15, 0x16, 0x15, 0x16, 0x15, 0x16, 0x15, 0x16, 0x11 };
         
-        public ISave GetData(string saveKey) => _savedData.ContainsKey(saveKey) ? _savedData[saveKey] : null;
-
+        public T GetData<T>(string saveKey) => _savedData.ContainsKey(saveKey) ? (T) _savedData[saveKey] : default;
         public void SaveData(string saveKey, ISave data)
         {
             _saveFile = Application.persistentDataPath + $"/{saveKey}_save.json";
@@ -30,10 +29,10 @@ namespace MaxHelpers
             _dataStream.Close();
         }
 
-        public void Load<T>(string saveKey)
+        public bool Load<T>(string saveKey)
         {
             _saveFile = Application.persistentDataPath + $"/{saveKey}_save.json";
-            if (!File.Exists(_saveFile)) return;
+            if (!File.Exists(_saveFile)) return false;
             _dataStream = new FileStream(_saveFile, FileMode.Open);
             var oAes = Aes.Create();
             var outputIv = new byte[oAes.IV.Length];
@@ -45,6 +44,7 @@ namespace MaxHelpers
             reader.Close();
             oStream.Close();
             _dataStream.Close();
+            return true;
         }
     }
 }
