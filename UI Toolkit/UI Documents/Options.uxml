@@ -11,7 +11,7 @@
                         <ui:DropdownField label="Resolution" index="-1" name="ResolutionSetting" class="DefaultDropdown" style="width: auto; height: auto;" />
                         <ui:DropdownField label="GraphicSettings" index="1" choices="Low, Medium, High" name="GraphicSetting" class="DefaultDropdown" style="width: auto; height: auto;" />
                     </ui:VisualElement>
-                    <ui:VisualElement name="ControlsPanel" style="height: 50%; flex-direction: column; align-items: stretch; justify-content: space-around;">
+                    <ui:VisualElement name="ControlsPanel" style="height: 50%; flex-direction: column; align-items: stretch; justify-content: flex-start;">
                         <ui:Label text="Controls" display-tooltip-when-elided="true" class="DefaultSubHeader" />
                         <ui:Slider picking-mode="Ignore" label="Sensetivity" value="0.5" high-value="1" low-value="0.1" name="SensitivitySlider" class="DefaultSlider" style="margin-right: 50px;" />
                     </ui:VisualElement>
