@@ -8,6 +8,7 @@ namespace MaxHelpers
         [SerializeField] private AudioSource musicSource;
         [SerializeField] private AudioSource soundsSource;
         [SerializeField] private AudioMixer audioMixer;
+        
         public void PlayMusic(AudioClip clip)
         {
             musicSource.clip = clip;

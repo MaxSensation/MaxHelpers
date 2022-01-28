@@ -10,6 +10,7 @@ namespace MaxHelpers
         private readonly Dictionary<string, ISave> _savedData = new();
         private string _saveFile;
         private FileStream _dataStream;
+        // Encryption key
         private readonly byte[] _savedKey = { 0x12, 0x15, 0x16, 0x15, 0x12, 0x15, 0x13, 0x15, 0x16, 0x15, 0x16, 0x15, 0x16, 0x15, 0x16, 0x11 };
         
         public T GetData<T>(string saveKey) => _savedData.ContainsKey(saveKey) ? (T) _savedData[saveKey] : default;
