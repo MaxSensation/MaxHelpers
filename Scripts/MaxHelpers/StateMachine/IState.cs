@@ -2,16 +2,10 @@
 {
     public interface IState
     {
-        void Tick()
-        {
-        }
+        void Tick() { }
 
-        void OnEnter()
-        {
-        }
+        void OnEnter() { }
 
-        void OnExit()
-        {
-        }
+        void OnExit() { }
     }
 }
