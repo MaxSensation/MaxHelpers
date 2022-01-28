@@ -73,5 +73,11 @@ namespace MaxHelpers
         }
         
         public IState GetPreviousState() => _prevState;
+
+        public void ResetState()
+        {
+            _currentState.OnExit();
+            _currentState.OnEnter();
+        }
     }
 }
