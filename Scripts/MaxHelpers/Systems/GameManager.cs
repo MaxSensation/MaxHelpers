@@ -1,3 +1,5 @@
+using System;
+
 namespace MaxHelpers
 {
     public class GameManager : StaticInstance<GameManager>
@@ -9,6 +11,8 @@ namespace MaxHelpers
             Inputs = new();
         }
 
-        public void Continue() => LevelManager.Instance.LoadLastLevel();
+        private void Start()
+        {
+        }
     }
 }
