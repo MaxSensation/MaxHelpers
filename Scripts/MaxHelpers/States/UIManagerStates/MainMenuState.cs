@@ -1,30 +1,26 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace MaxHelpers
 {
-    public class MainMenuState : IState
+    public class MainMenuState : UIBaseState, IState
     {
-        private readonly VisualTreeAsset _mainMenuUI;
-        private readonly UIManager _uiManager;
-
-        public MainMenuState(VisualTreeAsset mainMenuUI) => _mainMenuUI = mainMenuUI;
+        protected internal MainMenuState(UIDocument uiDoc, VisualTreeAsset asset) : base(uiDoc, asset) { }
 
         public void OnEnter()
         {
-            UIManager.Instance.UIElement.visualTreeAsset = _mainMenuUI;
-            UIManager.Instance.UIElement.rootVisualElement.Q<Button>("StartGame").clicked += GameManager.Instance.Continue;
-            UIManager.Instance.UIElement.rootVisualElement.Q<Button>("Options").clicked += UIManager.Instance.PressedOptionMenu;
-            UIManager.Instance.UIElement.rootVisualElement.Q<Button>("Quit").clicked += Application.Quit;
+            UIDoc.visualTreeAsset = Asset;
+            UIDoc.rootVisualElement.Q<Button>("StartGame").clicked += LevelManager.Instance.LoadLastLevel;
+            UIDoc.rootVisualElement.Q<Button>("Options").clicked += UIManager.Instance.PressedOptionMenu;
+            UIDoc.rootVisualElement.Q<Button>("Quit").clicked += Application.Quit;
             GameManager.Instance.Inputs.UI.Enable();
         }
         
         public void OnExit()
         {
-            UIManager.Instance.UIElement.rootVisualElement.Q<Button>("StartGame").clicked -= GameManager.Instance.Continue;
-            UIManager.Instance.UIElement.rootVisualElement.Q<Button>("Options").clicked -= UIManager.Instance.PressedOptionMenu;
-            UIManager.Instance.UIElement.rootVisualElement.Q<Button>("Quit").clicked -= Application.Quit;
+            UIDoc.rootVisualElement.Q<Button>("StartGame").clicked -= LevelManager.Instance.LoadLastLevel;
+            UIDoc.rootVisualElement.Q<Button>("Options").clicked -= UIManager.Instance.PressedOptionMenu;
+            UIDoc.rootVisualElement.Q<Button>("Quit").clicked -= Application.Quit;
             GameManager.Instance.Inputs.UI.Disable();
         }
     }

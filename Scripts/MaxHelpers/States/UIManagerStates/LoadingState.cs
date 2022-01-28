@@ -3,19 +3,18 @@ using UnityEngine.UIElements;
 
 namespace MaxHelpers
 {
-    public class LoadingState : IState
+    public class LoadingState : UIBaseState, IState
     {
-        private readonly VisualTreeAsset _loadingUI;
         private ProgressBar _progressBar;
-        private float _transitionSpeed = 3;
+        private const float TransitionSpeed = 3;
         private float _targetPercentage;
 
-        public LoadingState(VisualTreeAsset loadingUI) => _loadingUI = loadingUI;
-
+        protected internal LoadingState(UIDocument uiDoc, VisualTreeAsset asset) : base(uiDoc, asset) { }
+        
         public void OnEnter()
         {
-            UIManager.Instance.UIElement.visualTreeAsset = _loadingUI;
-            _progressBar = UIManager.Instance.UIElement.rootVisualElement.Q<ProgressBar>();
+            UIDoc.visualTreeAsset = Asset;
+            _progressBar = UIDoc.rootVisualElement.Q<ProgressBar>();
             _progressBar.value = 0f;
             _targetPercentage = 0f;
         }
@@ -23,7 +22,7 @@ namespace MaxHelpers
         public void Tick()
         {
             _targetPercentage = LevelManager.Instance.LoadingProgress;
-            _progressBar.value = Mathf.MoveTowards(_progressBar.value, _targetPercentage, _transitionSpeed * Time.deltaTime);
+            _progressBar.value = Mathf.MoveTowards(_progressBar.value, _targetPercentage, TransitionSpeed * Time.deltaTime);
         }
     }
 }

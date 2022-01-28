@@ -3,19 +3,16 @@ using UnityEngine.UIElements;
 
 namespace MaxHelpers
 {
-    public class InGameState : IState
+    public class InGameState : UIBaseState, IState
     {
-        private VisualTreeAsset _inGameUI;
-
-        public InGameState(VisualTreeAsset inGameUI) => _inGameUI = inGameUI;
-
+        protected internal InGameState(UIDocument uiDoc, VisualTreeAsset asset) : base(uiDoc, asset) { }
         public void OnEnter()
         {
-            UIManager.Instance.UIElement.visualTreeAsset = _inGameUI;
+            UIDoc.visualTreeAsset = Asset;
+            UIDoc.rootVisualElement.Q<VisualElement>("MainPanel").style.display = DisplayStyle.Flex;
             GameManager.Instance.Inputs.Player.Enable();
             Time.timeScale = 1f;
         }
-
         public void OnExit()
         {
             GameManager.Instance.Inputs.Player.Disable();
