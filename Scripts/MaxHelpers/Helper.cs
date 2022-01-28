@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -17,6 +18,7 @@ namespace MaxHelpers
         private static PointerEventData _eventDataCurrentPosition;
         private static List<RaycastResult> _results;
 
+        // Get the mainCamera from anywhere
         public static Camera Camera
         {
             get
@@ -31,6 +33,14 @@ namespace MaxHelpers
             if (WaitDictionary.TryGetValue(time, out var wait)) return wait;
             WaitDictionary[time] = new WaitForSeconds(time);
             return WaitDictionary[time];
+        }
+        
+        // Refresh a token
+        public static CancellationToken RefreshToken(ref CancellationTokenSource tokenSource) {
+            tokenSource?.Cancel();
+            tokenSource?.Dispose();
+            tokenSource = new CancellationTokenSource();
+            return tokenSource.Token;
         }
 
         public static bool IsOverUi()
