@@ -1,5 +1,5 @@
 # MaxHelpers
-A scripting package made from years of game development where each script is used in all my future projects.
+A scripting package made from years of game development where this package is used by all my future projects.
  
 -- Use as you will --
 
