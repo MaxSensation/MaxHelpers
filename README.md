@@ -7,3 +7,6 @@ A scripting package made from years of game development where this package is us
 Dependencies:
 - Unity new Input System
 - Unity UI Builder
+
+
+Read more about this project on my website: https://www.maximiliamrosen.com/unity-template
